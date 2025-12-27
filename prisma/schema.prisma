@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id          String       @id @default(uuid())
+  name        String       @db.VarChar(100)
+  username    String       @unique @db.VarChar(100)
+  email       String       @unique
+  authMethods AuthMethod[]
+  avatarUrl   String?
+  bio         String?      @db.VarChar(2000)
+  books       UserBook[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model AuthMethod {
+  id              String       @id @default(uuid())
+  userId          String
+  user            User         @relation(fields: [userId], references: [id])
+  provider        AuthProvider
+  providerEmailId String
+  hashedPassword  String?
+
+  @@unique([userId, provider])
+}
+
+model Book {
+  id          String     @id @default(uuid())
+  name        String     @db.VarChar(200)
+  description String?    @db.VarChar(5000)
+  userBooks   UserBook[]
+  pages       Int?
+  coverUrl    String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model UserBook {
+  id          String     @id @default(uuid())
+  userId      String
+  user        User       @relation(fields: [userId], references: [id])
+  bookId      String
+  book        Book       @relation(fields: [bookId], references: [id])
+  status      BookStatus
+  isFavorite  Boolean?   @default(false)
+  currentPage Int?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+enum AuthProvider {
+  LOCAL
+  GOOGLE
+}
+
+enum BookStatus {
+  FINISHED
+  DROPPED
+  READING
+  BACKLOGGED
+  WISHLIST
+}
