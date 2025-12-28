@@ -208,6 +208,8 @@ export type UserWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   authMethods?: Prisma.AuthMethodListRelationFilter
   books?: Prisma.UserBookListRelationFilter
+  myBookLists?: Prisma.BookListListRelationFilter
+  followingLists?: Prisma.BookListListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -221,6 +223,8 @@ export type UserOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   authMethods?: Prisma.AuthMethodOrderByRelationAggregateInput
   books?: Prisma.UserBookOrderByRelationAggregateInput
+  myBookLists?: Prisma.BookListOrderByRelationAggregateInput
+  followingLists?: Prisma.BookListOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -237,6 +241,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   authMethods?: Prisma.AuthMethodListRelationFilter
   books?: Prisma.UserBookListRelationFilter
+  myBookLists?: Prisma.BookListListRelationFilter
+  followingLists?: Prisma.BookListListRelationFilter
 }, "id" | "username" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -278,6 +284,8 @@ export type UserCreateInput = {
   updatedAt?: Date | string
   authMethods?: Prisma.AuthMethodCreateNestedManyWithoutUserInput
   books?: Prisma.UserBookCreateNestedManyWithoutUserInput
+  myBookLists?: Prisma.BookListCreateNestedManyWithoutCreatedByInput
+  followingLists?: Prisma.BookListCreateNestedManyWithoutFollowedByInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -291,6 +299,8 @@ export type UserUncheckedCreateInput = {
   updatedAt?: Date | string
   authMethods?: Prisma.AuthMethodUncheckedCreateNestedManyWithoutUserInput
   books?: Prisma.UserBookUncheckedCreateNestedManyWithoutUserInput
+  myBookLists?: Prisma.BookListUncheckedCreateNestedManyWithoutCreatedByInput
+  followingLists?: Prisma.BookListUncheckedCreateNestedManyWithoutFollowedByInput
 }
 
 export type UserUpdateInput = {
@@ -304,6 +314,8 @@ export type UserUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   authMethods?: Prisma.AuthMethodUpdateManyWithoutUserNestedInput
   books?: Prisma.UserBookUpdateManyWithoutUserNestedInput
+  myBookLists?: Prisma.BookListUpdateManyWithoutCreatedByNestedInput
+  followingLists?: Prisma.BookListUpdateManyWithoutFollowedByNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -317,6 +329,8 @@ export type UserUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   authMethods?: Prisma.AuthMethodUncheckedUpdateManyWithoutUserNestedInput
   books?: Prisma.UserBookUncheckedUpdateManyWithoutUserNestedInput
+  myBookLists?: Prisma.BookListUncheckedUpdateManyWithoutCreatedByNestedInput
+  followingLists?: Prisma.BookListUncheckedUpdateManyWithoutFollowedByNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -390,6 +404,16 @@ export type UserScalarRelationFilter = {
   isNot?: Prisma.UserWhereInput
 }
 
+export type UserListRelationFilter = {
+  every?: Prisma.UserWhereInput
+  some?: Prisma.UserWhereInput
+  none?: Prisma.UserWhereInput
+}
+
+export type UserOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
+}
+
 export type StringFieldUpdateOperationsInput = {
   set?: string
 }
@@ -416,6 +440,58 @@ export type UserUpdateOneRequiredWithoutAuthMethodsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAuthMethodsInput, Prisma.UserUpdateWithoutAuthMethodsInput>, Prisma.UserUncheckedUpdateWithoutAuthMethodsInput>
 }
 
+export type UserCreateNestedOneWithoutMyBookListsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMyBookListsInput, Prisma.UserUncheckedCreateWithoutMyBookListsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMyBookListsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedManyWithoutFollowingListsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFollowingListsInput, Prisma.UserUncheckedCreateWithoutFollowingListsInput> | Prisma.UserCreateWithoutFollowingListsInput[] | Prisma.UserUncheckedCreateWithoutFollowingListsInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFollowingListsInput | Prisma.UserCreateOrConnectWithoutFollowingListsInput[]
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+}
+
+export type UserUncheckedCreateNestedManyWithoutFollowingListsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFollowingListsInput, Prisma.UserUncheckedCreateWithoutFollowingListsInput> | Prisma.UserCreateWithoutFollowingListsInput[] | Prisma.UserUncheckedCreateWithoutFollowingListsInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFollowingListsInput | Prisma.UserCreateOrConnectWithoutFollowingListsInput[]
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+}
+
+export type UserUpdateOneRequiredWithoutMyBookListsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMyBookListsInput, Prisma.UserUncheckedCreateWithoutMyBookListsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMyBookListsInput
+  upsert?: Prisma.UserUpsertWithoutMyBookListsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutMyBookListsInput, Prisma.UserUpdateWithoutMyBookListsInput>, Prisma.UserUncheckedUpdateWithoutMyBookListsInput>
+}
+
+export type UserUpdateManyWithoutFollowingListsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFollowingListsInput, Prisma.UserUncheckedCreateWithoutFollowingListsInput> | Prisma.UserCreateWithoutFollowingListsInput[] | Prisma.UserUncheckedCreateWithoutFollowingListsInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFollowingListsInput | Prisma.UserCreateOrConnectWithoutFollowingListsInput[]
+  upsert?: Prisma.UserUpsertWithWhereUniqueWithoutFollowingListsInput | Prisma.UserUpsertWithWhereUniqueWithoutFollowingListsInput[]
+  set?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  disconnect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  delete?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  update?: Prisma.UserUpdateWithWhereUniqueWithoutFollowingListsInput | Prisma.UserUpdateWithWhereUniqueWithoutFollowingListsInput[]
+  updateMany?: Prisma.UserUpdateManyWithWhereWithoutFollowingListsInput | Prisma.UserUpdateManyWithWhereWithoutFollowingListsInput[]
+  deleteMany?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
+}
+
+export type UserUncheckedUpdateManyWithoutFollowingListsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFollowingListsInput, Prisma.UserUncheckedCreateWithoutFollowingListsInput> | Prisma.UserCreateWithoutFollowingListsInput[] | Prisma.UserUncheckedCreateWithoutFollowingListsInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFollowingListsInput | Prisma.UserCreateOrConnectWithoutFollowingListsInput[]
+  upsert?: Prisma.UserUpsertWithWhereUniqueWithoutFollowingListsInput | Prisma.UserUpsertWithWhereUniqueWithoutFollowingListsInput[]
+  set?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  disconnect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  delete?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  update?: Prisma.UserUpdateWithWhereUniqueWithoutFollowingListsInput | Prisma.UserUpdateWithWhereUniqueWithoutFollowingListsInput[]
+  updateMany?: Prisma.UserUpdateManyWithWhereWithoutFollowingListsInput | Prisma.UserUpdateManyWithWhereWithoutFollowingListsInput[]
+  deleteMany?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
+}
+
 export type UserCreateNestedOneWithoutBooksInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutBooksInput, Prisma.UserUncheckedCreateWithoutBooksInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutBooksInput
@@ -440,6 +516,8 @@ export type UserCreateWithoutAuthMethodsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   books?: Prisma.UserBookCreateNestedManyWithoutUserInput
+  myBookLists?: Prisma.BookListCreateNestedManyWithoutCreatedByInput
+  followingLists?: Prisma.BookListCreateNestedManyWithoutFollowedByInput
 }
 
 export type UserUncheckedCreateWithoutAuthMethodsInput = {
@@ -452,6 +530,8 @@ export type UserUncheckedCreateWithoutAuthMethodsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   books?: Prisma.UserBookUncheckedCreateNestedManyWithoutUserInput
+  myBookLists?: Prisma.BookListUncheckedCreateNestedManyWithoutCreatedByInput
+  followingLists?: Prisma.BookListUncheckedCreateNestedManyWithoutFollowedByInput
 }
 
 export type UserCreateOrConnectWithoutAuthMethodsInput = {
@@ -480,6 +560,8 @@ export type UserUpdateWithoutAuthMethodsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   books?: Prisma.UserBookUpdateManyWithoutUserNestedInput
+  myBookLists?: Prisma.BookListUpdateManyWithoutCreatedByNestedInput
+  followingLists?: Prisma.BookListUpdateManyWithoutFollowedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAuthMethodsInput = {
@@ -492,6 +574,143 @@ export type UserUncheckedUpdateWithoutAuthMethodsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   books?: Prisma.UserBookUncheckedUpdateManyWithoutUserNestedInput
+  myBookLists?: Prisma.BookListUncheckedUpdateManyWithoutCreatedByNestedInput
+  followingLists?: Prisma.BookListUncheckedUpdateManyWithoutFollowedByNestedInput
+}
+
+export type UserCreateWithoutMyBookListsInput = {
+  id?: string
+  name: string
+  username: string
+  email: string
+  avatarUrl?: string | null
+  bio?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  authMethods?: Prisma.AuthMethodCreateNestedManyWithoutUserInput
+  books?: Prisma.UserBookCreateNestedManyWithoutUserInput
+  followingLists?: Prisma.BookListCreateNestedManyWithoutFollowedByInput
+}
+
+export type UserUncheckedCreateWithoutMyBookListsInput = {
+  id?: string
+  name: string
+  username: string
+  email: string
+  avatarUrl?: string | null
+  bio?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  authMethods?: Prisma.AuthMethodUncheckedCreateNestedManyWithoutUserInput
+  books?: Prisma.UserBookUncheckedCreateNestedManyWithoutUserInput
+  followingLists?: Prisma.BookListUncheckedCreateNestedManyWithoutFollowedByInput
+}
+
+export type UserCreateOrConnectWithoutMyBookListsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutMyBookListsInput, Prisma.UserUncheckedCreateWithoutMyBookListsInput>
+}
+
+export type UserCreateWithoutFollowingListsInput = {
+  id?: string
+  name: string
+  username: string
+  email: string
+  avatarUrl?: string | null
+  bio?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  authMethods?: Prisma.AuthMethodCreateNestedManyWithoutUserInput
+  books?: Prisma.UserBookCreateNestedManyWithoutUserInput
+  myBookLists?: Prisma.BookListCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserUncheckedCreateWithoutFollowingListsInput = {
+  id?: string
+  name: string
+  username: string
+  email: string
+  avatarUrl?: string | null
+  bio?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  authMethods?: Prisma.AuthMethodUncheckedCreateNestedManyWithoutUserInput
+  books?: Prisma.UserBookUncheckedCreateNestedManyWithoutUserInput
+  myBookLists?: Prisma.BookListUncheckedCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserCreateOrConnectWithoutFollowingListsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutFollowingListsInput, Prisma.UserUncheckedCreateWithoutFollowingListsInput>
+}
+
+export type UserUpsertWithoutMyBookListsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutMyBookListsInput, Prisma.UserUncheckedUpdateWithoutMyBookListsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutMyBookListsInput, Prisma.UserUncheckedCreateWithoutMyBookListsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutMyBookListsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutMyBookListsInput, Prisma.UserUncheckedUpdateWithoutMyBookListsInput>
+}
+
+export type UserUpdateWithoutMyBookListsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  authMethods?: Prisma.AuthMethodUpdateManyWithoutUserNestedInput
+  books?: Prisma.UserBookUpdateManyWithoutUserNestedInput
+  followingLists?: Prisma.BookListUpdateManyWithoutFollowedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutMyBookListsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  authMethods?: Prisma.AuthMethodUncheckedUpdateManyWithoutUserNestedInput
+  books?: Prisma.UserBookUncheckedUpdateManyWithoutUserNestedInput
+  followingLists?: Prisma.BookListUncheckedUpdateManyWithoutFollowedByNestedInput
+}
+
+export type UserUpsertWithWhereUniqueWithoutFollowingListsInput = {
+  where: Prisma.UserWhereUniqueInput
+  update: Prisma.XOR<Prisma.UserUpdateWithoutFollowingListsInput, Prisma.UserUncheckedUpdateWithoutFollowingListsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutFollowingListsInput, Prisma.UserUncheckedCreateWithoutFollowingListsInput>
+}
+
+export type UserUpdateWithWhereUniqueWithoutFollowingListsInput = {
+  where: Prisma.UserWhereUniqueInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutFollowingListsInput, Prisma.UserUncheckedUpdateWithoutFollowingListsInput>
+}
+
+export type UserUpdateManyWithWhereWithoutFollowingListsInput = {
+  where: Prisma.UserScalarWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateManyMutationInput, Prisma.UserUncheckedUpdateManyWithoutFollowingListsInput>
+}
+
+export type UserScalarWhereInput = {
+  AND?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
+  OR?: Prisma.UserScalarWhereInput[]
+  NOT?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
+  id?: Prisma.StringFilter<"User"> | string
+  name?: Prisma.StringFilter<"User"> | string
+  username?: Prisma.StringFilter<"User"> | string
+  email?: Prisma.StringFilter<"User"> | string
+  avatarUrl?: Prisma.StringNullableFilter<"User"> | string | null
+  bio?: Prisma.StringNullableFilter<"User"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
 }
 
 export type UserCreateWithoutBooksInput = {
@@ -504,6 +723,8 @@ export type UserCreateWithoutBooksInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   authMethods?: Prisma.AuthMethodCreateNestedManyWithoutUserInput
+  myBookLists?: Prisma.BookListCreateNestedManyWithoutCreatedByInput
+  followingLists?: Prisma.BookListCreateNestedManyWithoutFollowedByInput
 }
 
 export type UserUncheckedCreateWithoutBooksInput = {
@@ -516,6 +737,8 @@ export type UserUncheckedCreateWithoutBooksInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   authMethods?: Prisma.AuthMethodUncheckedCreateNestedManyWithoutUserInput
+  myBookLists?: Prisma.BookListUncheckedCreateNestedManyWithoutCreatedByInput
+  followingLists?: Prisma.BookListUncheckedCreateNestedManyWithoutFollowedByInput
 }
 
 export type UserCreateOrConnectWithoutBooksInput = {
@@ -544,6 +767,8 @@ export type UserUpdateWithoutBooksInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   authMethods?: Prisma.AuthMethodUpdateManyWithoutUserNestedInput
+  myBookLists?: Prisma.BookListUpdateManyWithoutCreatedByNestedInput
+  followingLists?: Prisma.BookListUpdateManyWithoutFollowedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutBooksInput = {
@@ -556,6 +781,47 @@ export type UserUncheckedUpdateWithoutBooksInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   authMethods?: Prisma.AuthMethodUncheckedUpdateManyWithoutUserNestedInput
+  myBookLists?: Prisma.BookListUncheckedUpdateManyWithoutCreatedByNestedInput
+  followingLists?: Prisma.BookListUncheckedUpdateManyWithoutFollowedByNestedInput
+}
+
+export type UserUpdateWithoutFollowingListsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  authMethods?: Prisma.AuthMethodUpdateManyWithoutUserNestedInput
+  books?: Prisma.UserBookUpdateManyWithoutUserNestedInput
+  myBookLists?: Prisma.BookListUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutFollowingListsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  authMethods?: Prisma.AuthMethodUncheckedUpdateManyWithoutUserNestedInput
+  books?: Prisma.UserBookUncheckedUpdateManyWithoutUserNestedInput
+  myBookLists?: Prisma.BookListUncheckedUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserUncheckedUpdateManyWithoutFollowingListsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -566,11 +832,15 @@ export type UserUncheckedUpdateWithoutBooksInput = {
 export type UserCountOutputType = {
   authMethods: number
   books: number
+  myBookLists: number
+  followingLists: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   authMethods?: boolean | UserCountOutputTypeCountAuthMethodsArgs
   books?: boolean | UserCountOutputTypeCountBooksArgs
+  myBookLists?: boolean | UserCountOutputTypeCountMyBookListsArgs
+  followingLists?: boolean | UserCountOutputTypeCountFollowingListsArgs
 }
 
 /**
@@ -597,6 +867,20 @@ export type UserCountOutputTypeCountBooksArgs<ExtArgs extends runtime.Types.Exte
   where?: Prisma.UserBookWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountMyBookListsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BookListWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountFollowingListsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BookListWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -609,6 +893,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   updatedAt?: boolean
   authMethods?: boolean | Prisma.User$authMethodsArgs<ExtArgs>
   books?: boolean | Prisma.User$booksArgs<ExtArgs>
+  myBookLists?: boolean | Prisma.User$myBookListsArgs<ExtArgs>
+  followingLists?: boolean | Prisma.User$followingListsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -649,6 +935,8 @@ export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = run
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   authMethods?: boolean | Prisma.User$authMethodsArgs<ExtArgs>
   books?: boolean | Prisma.User$booksArgs<ExtArgs>
+  myBookLists?: boolean | Prisma.User$myBookListsArgs<ExtArgs>
+  followingLists?: boolean | Prisma.User$followingListsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -659,6 +947,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   objects: {
     authMethods: Prisma.$AuthMethodPayload<ExtArgs>[]
     books: Prisma.$UserBookPayload<ExtArgs>[]
+    myBookLists: Prisma.$BookListPayload<ExtArgs>[]
+    followingLists: Prisma.$BookListPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1065,6 +1355,8 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   readonly [Symbol.toStringTag]: "PrismaPromise"
   authMethods<T extends Prisma.User$authMethodsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$authMethodsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuthMethodPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   books<T extends Prisma.User$booksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$booksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserBookPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  myBookLists<T extends Prisma.User$myBookListsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$myBookListsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookListPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  followingLists<T extends Prisma.User$followingListsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$followingListsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookListPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1535,6 +1827,54 @@ export type User$booksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
   take?: number
   skip?: number
   distinct?: Prisma.UserBookScalarFieldEnum | Prisma.UserBookScalarFieldEnum[]
+}
+
+/**
+ * User.myBookLists
+ */
+export type User$myBookListsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the BookList
+   */
+  select?: Prisma.BookListSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the BookList
+   */
+  omit?: Prisma.BookListOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BookListInclude<ExtArgs> | null
+  where?: Prisma.BookListWhereInput
+  orderBy?: Prisma.BookListOrderByWithRelationInput | Prisma.BookListOrderByWithRelationInput[]
+  cursor?: Prisma.BookListWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.BookListScalarFieldEnum | Prisma.BookListScalarFieldEnum[]
+}
+
+/**
+ * User.followingLists
+ */
+export type User$followingListsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the BookList
+   */
+  select?: Prisma.BookListSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the BookList
+   */
+  omit?: Prisma.BookListOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BookListInclude<ExtArgs> | null
+  where?: Prisma.BookListWhereInput
+  orderBy?: Prisma.BookListOrderByWithRelationInput | Prisma.BookListOrderByWithRelationInput[]
+  cursor?: Prisma.BookListWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.BookListScalarFieldEnum | Prisma.BookListScalarFieldEnum[]
 }
 
 /**

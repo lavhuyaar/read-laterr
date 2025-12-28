@@ -259,6 +259,7 @@ export type UserBookOrderByWithRelationInput = {
 
 export type UserBookWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  userId_bookId?: Prisma.UserBookUserIdBookIdCompoundUniqueInput
   AND?: Prisma.UserBookWhereInput | Prisma.UserBookWhereInput[]
   OR?: Prisma.UserBookWhereInput[]
   NOT?: Prisma.UserBookWhereInput | Prisma.UserBookWhereInput[]
@@ -271,7 +272,7 @@ export type UserBookWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"UserBook"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   book?: Prisma.XOR<Prisma.BookScalarRelationFilter, Prisma.BookWhereInput>
-}, "id">
+}, "id" | "userId_bookId">
 
 export type UserBookOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -386,6 +387,11 @@ export type UserBookListRelationFilter = {
 
 export type UserBookOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type UserBookUserIdBookIdCompoundUniqueInput = {
+  userId: string
+  bookId: string
 }
 
 export type UserBookCountOrderByAggregateInput = {

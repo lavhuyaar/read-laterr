@@ -1,4 +1,3 @@
-// src/auth/jwt.guard.ts
 import {
   Injectable,
   CanActivate,

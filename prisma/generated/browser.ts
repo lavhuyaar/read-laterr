@@ -33,6 +33,11 @@ export type AuthMethod = Prisma.AuthMethodModel
  */
 export type Book = Prisma.BookModel
 /**
+ * Model BookList
+ * 
+ */
+export type BookList = Prisma.BookListModel
+/**
  * Model UserBook
  * 
  */

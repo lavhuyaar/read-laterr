@@ -8,16 +8,18 @@ datasource db {
 }
 
 model User {
-  id          String       @id @default(uuid())
-  name        String       @db.VarChar(100)
-  username    String       @unique @db.VarChar(100)
-  email       String       @unique
-  authMethods AuthMethod[]
-  avatarUrl   String?
-  bio         String?      @db.VarChar(2000)
-  books       UserBook[]
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  id             String       @id @default(uuid())
+  name           String       @db.VarChar(100)
+  username       String       @unique @db.VarChar(100)
+  email          String       @unique
+  authMethods    AuthMethod[]
+  avatarUrl      String?
+  bio            String?      @db.VarChar(2000)
+  books          UserBook[]
+  myBookLists    BookList[]
+  followingLists BookList[]   @relation("Following Booklists")
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
 }
 
 model AuthMethod {
@@ -32,14 +34,27 @@ model AuthMethod {
 }
 
 model Book {
-  id          String     @id @default(uuid())
-  name        String     @db.VarChar(200)
-  description String?    @db.VarChar(5000)
-  userBooks   UserBook[]
-  pages       Int?
-  coverUrl    String?
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  id           String     @id @default(uuid())
+  name         String     @db.VarChar(200)
+  author       String     @db.VarChar(200)
+  description  String?    @db.VarChar(5000)
+  userBooks    UserBook[]
+  pages        Int?
+  coverUrl     String?
+  addedOnLists BookList[]
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+}
+
+model BookList {
+  id              String   @id @default(uuid())
+  name            String   @db.VarChar(200)
+  createdByUserId String
+  createdBy       User     @relation(fields: [createdByUserId], references: [id])
+  books           Book[]
+  followedBy      User[]   @relation("Following Booklists")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 model UserBook {
@@ -53,6 +68,8 @@ model UserBook {
   currentPage Int?
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
+
+  @@unique([userId, bookId])
 }
 
 enum AuthProvider {
