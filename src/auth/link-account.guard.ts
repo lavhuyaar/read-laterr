@@ -9,7 +9,7 @@ import { AuthService } from './auth.service';
 import { CustomRequest } from 'src/types/CustomRequest.type';
 
 @Injectable()
-export class JwtAuthGuard implements CanActivate {
+export class LinkAccountGuard implements CanActivate {
   constructor(
     private jwtService: JwtService,
     private authService: AuthService,
@@ -17,20 +17,22 @@ export class JwtAuthGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request: CustomRequest = context.switchToHttp().getRequest();
-    const token: string | undefined = this.extractTokenFromCookie(request);
+    const linkToken: string | undefined =
+      this.extractLinkTokenFromCookie(request);
 
-    if (!token) {
+    if (!linkToken) {
       throw new UnauthorizedException();
     }
 
     try {
       const payload = await this.jwtService.verifyAsync<{
-        userId?: string;
-      }>(token);
+        userId: string;
+        email: string;
+        purpose: string;
+      }>(linkToken);
 
-      if (!payload?.userId) {
+      if (payload.purpose !== 'GOOGLE_LINK_ACCOUNT')
         throw new UnauthorizedException();
-      }
 
       const user = await this.authService.validateJwtUser(payload.userId);
 
@@ -38,16 +40,21 @@ export class JwtAuthGuard implements CanActivate {
         throw new UnauthorizedException();
       }
       request.user = undefined;
-      request.user = user;
+      request.user = {
+        id: payload.userId,
+        email: payload.email,
+      };
       return true;
     } catch {
       throw new UnauthorizedException();
     }
   }
 
-  private extractTokenFromCookie(request: CustomRequest): string | undefined {
-    const token: unknown = request.cookies.token;
-    if (typeof token == 'string') return token;
+  private extractLinkTokenFromCookie(
+    request: CustomRequest,
+  ): string | undefined {
+    const linkToken: unknown = request.cookies.link_token;
+    if (typeof linkToken == 'string') return linkToken;
     else return undefined;
   }
 }
