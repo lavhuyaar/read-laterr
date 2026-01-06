@@ -45,7 +45,11 @@ export class AuthController {
     if (googleProvider) {
       const user = await this.userService.getUser(googleProvider.userId);
       if (!user) throw new UnauthorizedException();
-      const token = this.jwtService.sign(user);
+      const token = this.jwtService.sign({
+        id: user.id,
+        name: user.name,
+        email: user.email,
+      });
 
       //Http only cookie
       response.cookie('token', token, {
@@ -94,13 +98,17 @@ export class AuthController {
       name,
       username,
       email,
-      avatarUrl,
       'GOOGLE',
+      avatarUrl,
       null,
     );
 
     if (!newUser) throw new UnauthorizedException();
-    const token = this.jwtService.sign(newUser);
+    const token = this.jwtService.sign({
+      id: newUser.id,
+      name: newUser.name,
+      email: newUser.email,
+    });
 
     //Http only cookie
     response.cookie('token', token, {
@@ -136,7 +144,11 @@ export class AuthController {
 
     const user = await this.userService.getUser(request.user.id);
     if (!user) throw new UnauthorizedException();
-    const token = this.jwtService.sign(user);
+    const token = this.jwtService.sign({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+    });
 
     response.cookie('token', token, {
       sameSite: 'strict',

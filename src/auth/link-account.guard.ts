@@ -41,8 +41,9 @@ export class LinkAccountGuard implements CanActivate {
       }
       request.user = undefined;
       request.user = {
-        id: payload.userId,
-        email: payload.email,
+        id: user.id,
+        email: user.email,
+        name: user.name,
       };
       return true;
     } catch {

@@ -1,7 +1,11 @@
-import { User } from '@prisma/client';
 import { Request } from 'express';
 
 export type CustomRequest = Request & {
   token?: string;
-  user?: User;
+  user?: {
+    id: string;
+    email: string;
+    name: string;
+    avatarUrl?: string;
+  };
 };

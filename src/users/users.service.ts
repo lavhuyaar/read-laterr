@@ -21,8 +21,8 @@ export class UsersService {
     name: string,
     username: string,
     email: string,
-    avatarUrl: string | null,
     provider: 'GOOGLE' | 'LOCAL',
+    avatarUrl?: string | null,
     hashedPassword?: string | null,
   ) {
     // Transaction -> Ensures a user is always created with a provider
