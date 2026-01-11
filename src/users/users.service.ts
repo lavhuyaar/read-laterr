@@ -37,4 +37,12 @@ export class UsersService {
       return user;
     });
   }
+
+  async verifyUniqueUser(email: string) {
+    return this.prisma.user.findFirst({
+      where: {
+        email,
+      },
+    });
+  }
 }

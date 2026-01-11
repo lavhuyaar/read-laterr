@@ -7,14 +7,22 @@ import {
   Delete,
   UseGuards,
   UnauthorizedException,
+  HttpStatus,
+  Body,
+  HttpCode,
 } from '@nestjs/common';
 import type { Response } from 'express';
 import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcryptjs';
 import { AuthService } from './auth.service';
 import { GoogleOAuthGuard } from 'src/auth/google-oauth/google-oauth.guard';
 import type { CustomRequest } from 'src/types/CustomRequest.type';
 import { UsersService } from 'src/users/users.service';
 import { LinkAccountGuard } from './link-account.guard';
+import { RegisterDto } from 'src/validations/RegisterDto';
+import { generateUsername } from 'src/utils/generateUsername';
+import { JwtAuthGuard } from './jwt.guard';
+import { Throttle } from '@nestjs/throttler';
 
 @Controller('auth')
 export class AuthController {
@@ -25,6 +33,7 @@ export class AuthController {
   ) {}
 
   @Get('google-sign-in')
+  @Throttle({ default: { ttl: 60000, limit: 5 } })
   @UseGuards(GoogleOAuthGuard)
   googleAuth() {}
 
@@ -53,7 +62,7 @@ export class AuthController {
 
       //Http only cookie
       response.cookie('token', token, {
-        sameSite: 'strict',
+        sameSite: 'lax', // Change to strict just before deploying
         secure: true,
         httpOnly: true,
         maxAge: 6 * 24 * 60 * 60 * 1000, // 6d
@@ -80,7 +89,7 @@ export class AuthController {
       });
 
       response.cookie('link_token', linkToken, {
-        sameSite: 'strict',
+        sameSite: 'lax', // Change to strict just before deploying
         secure: true,
         httpOnly: true,
         maxAge: 2 * 60 * 1000, // 2m
@@ -93,7 +102,7 @@ export class AuthController {
 
     // If neither local nor google provider exists (User is new)
     const { name, email, avatarUrl } = request.user;
-    const username = `${name}${Date.now()}`;
+    const username = generateUsername(name);
     const newUser = await this.userService.createUserWithProvider(
       name,
       username,
@@ -112,7 +121,7 @@ export class AuthController {
 
     //Http only cookie
     response.cookie('token', token, {
-      sameSite: 'strict',
+      sameSite: 'lax', // Change to strict just before deploying
       secure: true,
       httpOnly: true,
       maxAge: 6 * 24 * 60 * 60 * 1000, // 6d
@@ -126,6 +135,7 @@ export class AuthController {
   }
 
   @Get('link-google')
+  @Throttle({ default: { ttl: 60000, limit: 5 } })
   @UseGuards(LinkAccountGuard)
   async linkGoogle(
     @Req() request: CustomRequest,
@@ -151,7 +161,7 @@ export class AuthController {
     });
 
     response.cookie('token', token, {
-      sameSite: 'strict',
+      sameSite: 'lax', // Change to strict just before deploying
       secure: true,
       httpOnly: true,
       maxAge: 6 * 24 * 60 * 60 * 1000, // 6d
@@ -165,11 +175,87 @@ export class AuthController {
   }
 
   @Post('register')
-  async registerLocal() {}
+  @Throttle({ default: { ttl: 60000, limit: 5 } })
+  @HttpCode(HttpStatus.CREATED)
+  async registerLocal(@Body() body: RegisterDto) {
+    const { name, password, email } = body;
+
+    const existingUser = await this.userService.verifyUniqueUser(email);
+    if (existingUser)
+      throw new UnauthorizedException('Invalid email or password');
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const username = generateUsername(name);
+    const newUser = await this.userService.createUserWithProvider(
+      name,
+      username,
+      email,
+      'LOCAL',
+      null,
+      hashedPassword,
+    );
+
+    return {
+      user: newUser,
+      message: 'User registered successfully!',
+    };
+  }
 
   @Post('login')
-  async loginLocal() {}
+  @Throttle({ default: { ttl: 60000, limit: 5 } })
+  async loginLocal(@Body() body: RegisterDto, @Res() response: Response) {
+    const { email, password } = body;
+
+    const localProvider = await this.authService.getProvider(email, 'LOCAL');
+
+    // If user never existed or only Google auth method exists
+    if (!localProvider)
+      throw new UnauthorizedException('Invalid email or password');
+
+    // If account was created via local method
+    const hashedPassword: string | null = localProvider.hashedPassword;
+    if (typeof hashedPassword != 'string') throw new UnauthorizedException();
+    const isMatch = await bcrypt.compare(password, hashedPassword);
+
+    if (!isMatch) throw new UnauthorizedException('Invalid email or password');
+
+    const user = await this.userService.getUser(localProvider.userId);
+    if (!user) throw new UnauthorizedException();
+
+    const token = this.jwtService.sign({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+    });
+
+    response.cookie('token', token, {
+      sameSite: 'lax', // Change to strict just before deploying
+      secure: true,
+      httpOnly: true,
+      maxAge: 6 * 24 * 60 * 60 * 1000,
+    });
+
+    return {
+      user,
+      message: 'User logged in successfully!',
+    };
+  }
 
   @Delete('logout')
-  async logout() {}
+  @UseGuards(JwtAuthGuard)
+  logout(
+    @Req() request: CustomRequest,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    if (!request.user) throw new UnauthorizedException();
+
+    response.clearCookie('token', {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'lax', // Change to strict just before deploying
+    });
+    return {
+      message: 'Successfully logged out!',
+    };
+  }
 }
